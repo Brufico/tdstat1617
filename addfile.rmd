@@ -1,0 +1,66 @@
+
+```{r Arrondissement2}
+var <- "Arrondissement2"
+res <- result(var)
+```
+
+variable : `r res$name`, (effectif = `r res$numcases`)
+------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentations graphiques
+
+```{r}
+res$plot
+res$plot1
+```
+--------------------------------------------------------
+
+```{r Arrondissement2}
+var <- "Arrondissement2"
+res <- result(var)
+```
+
+variable : `r res$name`, (effectif = `r res$numcases`)
+------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentations graphiques
+
+```{r}
+res$plot
+res$plot1
+```
+--------------------------------------------------------
+
+```{r Arrondissement2}
+var <- "Arrondissement2"
+res <- result(var)
+```
+
+variable : `r res$name`, (effectif = `r res$numcases`)
+------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentations graphiques
+
+```{r}
+res$plot
+res$plot1
+```
+--------------------------------------------------------

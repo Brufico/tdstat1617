@@ -1,0 +1,348 @@
+---
+title: "TD 1 stats"
+author: "Bruno Fischer Colonimos"
+output:
+  pdf_document:
+    number_sections: yes
+    toc: yes
+  html_document:
+    number_sections: yes
+    theme: readable
+    toc: yes
+subtitle: "Variable par variable, à plat"
+---
+
+```{r init, include=FALSE}
+library(knitr)
+opts_chunk$set(echo = FALSE, warning=FALSE)
+# opts_chunk$set(echo = FALSE, fig.width = 5, fig.height = 5)
+options(digits = 2, scipen = 7)
+# width + heights figures constants
+dkfigwidth <- 5
+dkfigheight <- 5
+lkfigwidth <- 8
+lkfigheight <- 7
+```
+
+
+```{r morecode, include=FALSE, warning=FALSE}
+# More code
+# ---------
+source("standardfunctionsV10.R")
+```
+
+
+
+
+```{r data_in}
+
+# load data
+df <- read.csv2(file.path("data", "1_1.csv"))
+# make factor with int
+df$arrondissement <- factor(df$arrondissement)
+colnames(df) <- c("client.no" , "arrondissement", "genre" , "age",
+                  "montant.depense", "nombre.de.visites", "riz.complet", 
+                  "tablettes.chocolat")
+
+
+```
+
+
+
+
+Analyse à plat
+=================
+
+```{r res_store,results="hide"}
+# Storing results
+# initialization
+initresult <- function() {
+        allresults <- list(whatsit = "resultlist") # encapsulated list of results
+        function(rname, rval) {
+        if (missing(rval)) {
+                allresults[[rname]]
+        } else {
+                allresults[[rname]] <<- rval
+                rname
+        }
+}
+}
+
+
+# modifier and accessor function
+result <- initresult
+
+```
+
+
+```{r listtaf}
+
+getvars <- function(dframe) {
+        cl <- sapply(dframe, function(col) class(col))
+        ddf <- data.frame( names = colnames(dframe), 
+                    types = cl )
+        ddf
+        # cl
+}
+
+cl <- getvars(df)
+
+d <- data.frame(colnames(df), cl)
+
+
+
+
+
+
+todo <- unlist(lapply(colnames(df),
+              function(x) {
+                      paste0("result(",
+                             "'", x, "'", ",  ", ")" )}
+              ))
+
+cat(todo, sep="\n")
+
+```
+
+
+```{r makeresults, results="hide"}
+
+# result('client.no', 
+#        ) 
+
+result('arrondissement',  
+       cat1(df, 'arrondissement')) 
+
+result('genre', cat1(df, 'genre') ) 
+
+result('age', 
+       num1c(df, "age", breaks = seq(20, 80, by=10), closed = "left" 
+             # bins = "nclass.Sturges"
+             ) )
+result('age_d', num1d(df, "age") )
+
+result('montant.depense', 
+       num1c(df, "montant.depense", breaks = seq(40, 240, by = 20),
+             closed = "left" 
+             # bins = "nclass.Sturges"
+             ) ) 
+
+result('nombre.de.visites', num1d(df, "nombre.de.visites") ) 
+
+result('riz.complet', cat1(df, 'riz.complet') ) 
+
+result('tablettes.chocolat', 
+       num1d(df, "tablettes.chocolat") )
+
+```
+
+
+```{r arr1}
+var <- "arrondissement"
+res <- result(var)
+```
+
+variable : `r res$name`, (effectif = `r res$numcases`)
+------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentations graphiques
+
+```{r}
+res$plot
+res$plot1
+```
+
+
+-------------------------------------
+
+```{r genre1}
+var <- "genre"
+res <- result(var)
+```
+
+variable : `r res$name`, (effectif = `r res$numcases`)
+------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentations graphiques
+
+```{r}
+res$plot
+res$plot1
+```
+
+
+
+-------------------------------------
+
+```{r riz1}
+# colnames(df)
+var <- "riz.complet"
+res <- result(var)
+```
+
+variable : `r res$name`, (effectif = `r res$numcases`)
+------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentations graphiques
+
+```{r}
+res$plot
+res$plot1
+```
+
+
+-------------------------------------
+
+```{r}
+# colnames(df)
+var <- "age_d"
+res <- result(var)
+```
+
+variable : `r res$name`, (variable discrète) (effectif = `r res$numcases`)
+------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+
+kable(t(as.data.frame(res$summaries)))
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentation graphiques
+
+```{r}
+res$plot
+```
+
+-------------------------------------
+
+```{r}
+# colnames(df)
+var <- "age"
+res <- result(var)
+```
+
+variable : `r res$name`, (variable continue) (effectif = `r res$numcases`)
+------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+
+kable(t(as.data.frame(res$summaries)))
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentation graphique
+
+```{r}
+res$plot
+```
+
+
+
+-------------------------------------
+
+```{r}
+# colnames(df)
+var <- "montant.depense"
+res <- result(var)
+```
+
+variable : `r res$name`, (variable continue) (effectif = `r res$numcases`)
+------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+
+kable(t(as.data.frame(res$summaries)))
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentation graphique
+
+```{r}
+ggplot(df, aes(x=1,y=montant.depense)) + geom_boxplot()
+res$plot
+```
+
+
+
+-------------------------------------
+
+```{r}
+# colnames(df)
+var <- "nombre.de.visites"
+res <- result(var)
+```
+
+variable : `r res$name`, (variable discrète) (effectif = `r res$numcases`)
+------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+
+kable(t(as.data.frame(res$summaries)))
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentation graphiques
+
+```{r}
+res$plot
+```
+
+
+
+-------------------------------------
+
+```{r}
+# colnames(df)
+var <- "tablettes.chocolat"
+res <- result(var)
+```
+
+variable : `r res$name`, (variable discrète) (effectif = `r res$numcases`)
+------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+
+kable(t(as.data.frame(res$summaries)))
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentation graphiques
+
+```{r}
+res$plot
+```
+
+
+
+
+
+
