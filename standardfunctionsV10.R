@@ -2,7 +2,7 @@
 #'title: "Standard Functions for Basic Statistical Analysis"
 #'subtitle: R code in standardfunctions V10.R
 #'author: "Bruno Fischer Colonimos"
-#'date: "3 juillet 2016"
+#'date: "16 mars 2017"
 #'abstract: |
 #'      This is the code of the standard functions v10. ( make-results= modified)
 #'output:
@@ -96,6 +96,8 @@ sfdefault("reportNA", FALSE) # report number of NA's in a variable?
 sfdefault("orderfreq", TRUE) # Should we order the levels of a factor before graphing?
 
 #' display options
+
+#+ dispoptions, results = "hide"
 sfdefault("digits", 2)
 sfdefault("sumdigits" , 2)
 sfdefault("filldefault", "steelblue")
@@ -103,7 +105,7 @@ sfdefault("colorannots1", "red")
 # max number of plots
 sfdefault("maxplots", 3)
 # options discrete charts
-sfdefault("cat1plots", c("pie", "bar")) # which charts/plots to store, for 1 categorical var #c("bar", "pie")
+sfdefault("cat1plots", c("pie", "bar")) # which plots to store for 1 cat var #c("bar", "pie")
 
 # options bar chart
 sfdefault("discretebarwidth", 0.5)
@@ -112,7 +114,7 @@ sfdefault("discretebarwidth", 0.5)
 sfdefault("scaletitle" , "") # title for the legend of the pie
 sfdefault("dolabel" , TRUE) # label the slices with %
 sfdefault("minperc" , 5) # minimal % value for showing a lable
-sfdefault("labpos" , 1.15) # position of label, relative to the center (1 = radius of the plot, 0= center)
+sfdefault("labpos" , 1.15) # label position relative to the center (0=center, 1 = plot radius)
 
 # verification
 # sfdefault("?")
@@ -127,7 +129,7 @@ sfdefault("labpos" , 1.15) # position of label, relative to the center (1 = radi
 # make a result list. unsupplied elements assigned default=NULL and not included in result list
 make.result <- function(name = NULL,
                         funname = NULL, # name of the function which produced the result
-                        varnames =NULL, # vector of variable names (or better = named vector of variable names)
+                        varnames =NULL, # vector (or better = named vector) of variable names
                         numcases = NULL, # number of non-NA cases
                         summaries = NULL, # numerical summaries (quantitative variables)
                         levels = NULL,
@@ -165,8 +167,38 @@ make.result <- function(name = NULL,
 
 
 
+#' Recording a collection of sets of statistical  results
+#' ======================================================
+
+# initialization : create the recording structure and the accessor/modifier
+# function
+initresult <- function() {
+        allresults <- list(.whatsit = "resultlist") # encapsulated list of results
+        function(rname, rval) {
+                if (missing(rval)) {
+                        allresults[[rname]]
+                } else {
+                        allresults[[rname]] <<- rval
+                        rname
+                }
+        }
+}
 
 
+# assigning the modifier and accessor function to 'result
+result <- initresult
+
+#'
+#' ### usage:
+#'
+#' for each statistical function that returns a set of results, call
+#' result(<codename>, funname (arguments...) ) to **store** the results set under the name <codename>.
+#' result(<codename>) **retrieves and returns** the results set stored under the name <codename>
+
+
+
+
+#'
 #' Helper functions
 #'=======================================================
 
@@ -204,7 +236,7 @@ assoc.op <- function(opname, listargs) {
         }
 }
 
-#' REM: This ^ is likely not necessary. Check 'reduce'
+#' REM: This is likely not necessary. Check 'reduce'
 
 
 # identify a  warning
@@ -454,12 +486,17 @@ try.chisq.test <- function(..., keep.all = TRUE) {
 }
 
 
-#
+
+#'-----------------------------------------------------------------
+#'
+
+
 #' Graphing functions
 #' ================================================================
 #'
 
 #' Simple bar chart
+#' ----------------
 #
 # sfdefault("percentlabel")
 
@@ -498,6 +535,7 @@ barchart <- function(dataf,
 
 
 #' Pie chart
+#' ----------------
 #'
 # sfdefault("scaletitle" , "") # title for the legend of the pie
 # sfdefault("dolabel" , TRUE) # label the slices with %
@@ -545,6 +583,7 @@ piechart <- function(data, var,
 
 
 #' Simple Histogram + optional density
+#' ------------------------------------
 #'
 chistodens <- function(dataf, nomvar,
                        usedensity = FALSE, usendensity =FALSE, plot_density = FALSE,
@@ -578,6 +617,7 @@ chistodens <- function(dataf, nomvar,
 
 
 #' continuous x factor boxplot & jitter plot
+#' ---------------------------------------
 #'
 cbyfboxjit <- function(dataf, varf, varc, useNA = "no",
                        labellayer = "", labelall = "All values", labelgroups = "by goup") {
@@ -595,7 +635,9 @@ cbyfboxjit <- function(dataf, varf, varc, useNA = "no",
 }
 
 
-# continuous x discrete boxplot & jitter plot
+#' continuous x discrete boxplot & jitter plot
+#' --------------------------------------------
+#
 cbydboxjit <- function(dataf, vard, varc, useNA = "no",
                        labellayer = "", labelall = "All values", labelgroups = "by goup") {
         # dataf <- as.data.frame(dataf) # same problem with tbl_df
@@ -613,7 +655,8 @@ cbydboxjit <- function(dataf, vard, varc, useNA = "no",
 
 
 #' continuous by factor density plot
-#'
+#' ---------------------------------
+
 cbyfdensity <- function(dataf, varf, varc, useNA = "no") {
         if (useNA == "no") {
                 dataf <- dataf[!is.na(dataf[[varf]]) & !is.na(dataf[[varc]]), ]
@@ -624,7 +667,8 @@ cbyfdensity <- function(dataf, varf, varc, useNA = "no") {
 }
 
 
-#' freqpoly
+#' continuous by factor freqpoly
+#' -----------------------------
 #'
 cbyffreqpoly <- function(dataf, varf, varc, useNA = "no", size = 1) {
         if (useNA == "no") {
@@ -636,7 +680,9 @@ cbyffreqpoly <- function(dataf, varf, varc, useNA = "no", size = 1) {
 }
 
 
-#' dodgeded histogram
+#'
+#' continuous by factor dodged histogram
+#' -------------------------------------
 #'
 
 cbyfhistogram <- function(dataf, varf, varc, useNA = "no",
@@ -656,7 +702,8 @@ cbyfhistogram <- function(dataf, varf, varc, useNA = "no",
 }
 
 
-#' faceted histogram
+#' continuous by factor faceted histogram
+#' ---------------------------------------
 #'
 cbyffachistogram <- function(dataf, varf, varc, useNA = "no",
                              usedensity = FALSE, usendensity = FALSE, ...) {
@@ -735,7 +782,8 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
 
 
-
+#' -------------------------------------
+#'
 
 
 #'
@@ -763,6 +811,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 #'
 #' verbatim + verbatim2  = list of text values ( as in "other..." answers)
 #' ---------------------------------------------------------------------
+#'
 
 
 verbatim <- function(dataf, nomfact, useNA = "no"){
@@ -802,7 +851,7 @@ verbatim2 <- function(dataf, nomfact, bynomfact,  useNA = "no"){
 
 
 #'
-#' cat1
+#' cat1 : 1 categorical variable
 #' --------------------------------------------------------------------
 #'
 
@@ -917,7 +966,6 @@ cat1 <- function(dataf, nomfact, useNA = "no",
 #' mocat1 : Multiple Ordered Categorical
 #' --------------------------------------
 #'
-
 
 mocat1 <- function(dataf, prefix, valvect = NULL, valshort = NULL, valname = NULL) {
         variables <- grep(prefix, colnames(dataf), value = TRUE) # => the relevant cols names
@@ -1180,6 +1228,7 @@ num1c <- function(dataf, nomvar, usedensity = FALSE, plot_density = FALSE,
 
 #' cat2 = 2 categorical vars
 #' ---------------------------------------------------------------------
+#'
 
 # definition
 cat2 <- function(dataf, nomfact1, nomfact2,  useNA = "no",
@@ -1278,7 +1327,7 @@ cat2 <- function(dataf, nomfact1, nomfact2,  useNA = "no",
 
 
 
-#' cat1num1
+#' cat1num1 (cat1num1c, cat1num1d)
 #' -------------------------------------------------------------------------
 #
 # fonctions de d?termination du nombre de classes dabs un histogramme
@@ -1287,8 +1336,9 @@ cat2 <- function(dataf, nomfact1, nomfact2,  useNA = "no",
 # nclass.scott(mpg$hwy)
 #
 #
+
+
 #' ### fonctions de generation de graphiques
-#' ------------------------------------------------------
 
 #' useful
 
@@ -1342,10 +1392,8 @@ class(bins)
 # pretty(c(r[1], r[2]), n = nb)
 
 
-#'### cat1num1c
+#' ### cat1num1c (in progress)
 
-
-# in progress
 catnum1c <- function(dataf, nomfact, nomvar,  useNA = "no",
                      orderfreq = TRUE, orderdesc = TRUE, ordervar = "c..nt",
                      orderval = NA, orderfun = sum, nlevel =NULL,
