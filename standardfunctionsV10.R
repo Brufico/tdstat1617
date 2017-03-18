@@ -8,6 +8,7 @@
 #'output:
 #'  pdf_document:
 #'    toc: yes
+#'    number_sections: true
 #'  html_document:
 #'    number_sections: yes
 #'    toc: yes
@@ -116,6 +117,9 @@ sfdefault("dolabel" , TRUE) # label the slices with %
 sfdefault("minperc" , 5) # minimal % value for showing a lable
 sfdefault("labpos" , 1.15) # label position relative to the center (0=center, 1 = plot radius)
 
+# analysis names options
+sfdefault("varsep" , "_x_") # variable separator in names of analysis
+
 # verification
 # sfdefault("?")
 
@@ -128,6 +132,7 @@ sfdefault("labpos" , 1.15) # label position relative to the center (0=center, 1 
 
 # make a result list. unsupplied elements assigned default=NULL and not included in result list
 make.result <- function(name = NULL,
+                        caption = NULL,
                         funname = NULL, # name of the function which produced the result
                         varnames =NULL, # vector (or better = named vector) of variable names
                         numcases = NULL, # number of non-NA cases
@@ -174,7 +179,8 @@ make.result <- function(name = NULL,
 # function
 initresult <- function() {
         allresults <- list(.whatsit = "resultlist") # encapsulated list of results
-        function(rname, rval) {
+        # store or retrieve one result
+        oneres <- function(rname, rval) {
                 if (missing(rval)) {
                         allresults[[rname]]
                 } else {
@@ -182,11 +188,15 @@ initresult <- function() {
                         rname
                 }
         }
+        allres <- function() {allresults}
+        list(oneres, allres)
 }
 
 
 # assigning the modifier and accessor function to 'result
-result <- initresult
+resultfuns <- initresult()
+result <- resultfuns[[1]]
+allres <- resultfuns[[2]]
 
 #'
 #' ### usage:
@@ -195,6 +205,15 @@ result <- initresult
 #' result(<codename>, funname (arguments...) ) to **store** the results set under the name <codename>.
 #' result(<codename>) **retrieves and returns** the results set stored under the name <codename>
 
+
+#' generating a unique name for an analysis
+
+# get list of names from the list of results
+allresnames <- function() {
+        names(allres())[-1]
+}
+
+# beware duplicate names !!!
 
 
 
@@ -823,7 +842,8 @@ verbatim <- function(dataf, nomfact, useNA = "no"){
         numc <- length(nonavect(dataf[[nomfact]]))
         ptable <- as.data.frame(dataf[[nomfact]])
         colnames(ptable) <- "Verbatim"
-        make.result(name = paste0( nomfact, "(verbatim)" ), #modifié
+        make.result(name = nomfact,
+                    caption = paste0( nomfact, " (verbatim)" ), #modifié
                     funname = verbatim,
                     varnames = c(nomfact = nomfact), # ??? is named vector ok ??
                     ptable = ptable,
