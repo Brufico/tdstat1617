@@ -167,8 +167,7 @@ make.result <- function(name = NULL,
         }
 }
 
-# result retrieval:
-# use result$name or result[[name]]
+# result elements retrieval: use result$name or result[[name]]
 
 
 
@@ -193,7 +192,7 @@ initresult <- function() {
 }
 
 
-# assigning the modifier and accessor function to 'result
+# assigning the modifier and accessor function to 'result, and the list of result to allresults
 resultfuns <- initresult()
 result <- resultfuns[[1]]
 allres <- resultfuns[[2]]
@@ -213,7 +212,7 @@ allresnames <- function() {
         names(allres())[-1]
 }
 
-# beware duplicate names !!!
+# beware duplicate names !!! make function to avoid accidents
 
 
 
