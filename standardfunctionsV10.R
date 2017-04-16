@@ -207,12 +207,19 @@ allres <- resultfuns[[2]]
 
 #' generating a unique name for an analysis
 
-# get list of names from the list of results
+# get list of names from the list of results (finds and returns the "external" storage names)
 allresnames <- function() {
         names(allres())[-1]
 }
 
-# beware duplicate names !!! make function to avoid accidents
+# beware duplicate names !!! make function to avoid accidents (see "tries.R")
+
+
+
+
+
+
+
 
 
 
