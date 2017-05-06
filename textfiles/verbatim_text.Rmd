@@ -1,0 +1,15 @@
+
+```{r <name>}
+var <- "<name>"
+res <- result(var)
+```
+
+Analysis : `r res$caption`, (nombre répondants = `r res$numcases`)
+------------------------------------------------------------------
+
+```{r}
+kable(res$ptable, caption = "Réponses")
+```
+------------------------------------------------------------------
+
+

@@ -1,3 +1,21 @@
+#'---
+#'title: "Tries"
+#'subtitle: "Various tries"
+#'author: "Bruno Fischer Colonimos"
+#'date: "01/05/2017"
+#'abstract: |
+#'      Blabla.
+#'      blablabla.
+#'output:
+#'  html_document:
+#'    number_sections: yes
+#'    toc: yes
+#'    theme: readable
+#'  pdf_document:
+#'    toc: yes
+#'  word_document: default
+#'---
+
 
 # beware duplicate names
 nam <- "name_§_flooz"
@@ -202,7 +220,9 @@ get.text.lines <- function(funname, varnames) {
 }
 
 
-
+# example
+get.text.lines("cat1", c('zozo', 'zizi'))
+get.text.lines("verbatim", c('zaza', 'zazie'))
 
 
 

@@ -1,0 +1,22 @@
+
+```{r <name>}
+var <- "<name>"
+res <- result(var)
+```
+
+Analysis : `r res$caption`, (nombre répondants = `r res$numcases`)
+------------------------------------------------------------------
+
+```{r}
+kable(res$ptable)
+```
+
+Test du chi2 (équirépartition) : `r res$chi2$test1$method` : p-valeur `r res$chi2$test1$p.value`
+
+Représentations graphiques
+
+```{r}
+res$plot
+res$plot1
+```
+--------------------------------------------------------

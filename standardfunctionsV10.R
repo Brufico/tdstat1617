@@ -1,4 +1,4 @@
-#'---
+#' #'---
 #'title: "Standard Functions for Basic Statistical Analysis"
 #'subtitle: R code in standardfunctions V10.R
 #'author: "Bruno Fischer Colonimos"
@@ -20,12 +20,16 @@
 
 
 #+ init, include=FALSE
+if (!require(knitr)) {install.packages("knitr")}
 library(knitr)
 # opts_chunk$set(results="hide")
-
+if (!require(ggplot2)) {install.packages("ggplot2")}
 library(ggplot2)
+if (!require(dplyr)) {install.packages("dplyr")}
 library(dplyr)
-library(reshape2)
+#
+# if (!require(reshape2)) {install.packages("reshape2")}
+# library(reshape2)
 
 
 #' Constants and default options settings
