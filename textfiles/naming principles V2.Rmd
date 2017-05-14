@@ -27,10 +27,10 @@ Structure of each results record and of the list-of-results
 ------------------------------------------------
 
 ```{r eval=FALSE}
-allresults  # list-of-all-results = named list of all results, 
+allresults  # list-of-all-results = **named list** of all results, 
         |   # Privately called allresults in functions that access and modify it: initresult(), result(), allres()
         |
-        |- name ... # one result 
+        |- name ... # one result set (for one analysis)
                 (
                 name, # supposedly, the storage name in allresults. Is it useful ??
                 funname = "function name"
@@ -68,11 +68,25 @@ allresults  # list-of-all-results = named list of all results,
 
 
 
-1 variable
-----------
+Functions relative to results sets and list-of-results 
+-----------------------------------------------------
 
-* name = variable
-* caption = variable (function)
+* initresult() -- initializes list-of-results and create accessor functions
+        # call:
+        # resultfuns <- initresult()
+        # result <- resultfuns[[1]]
+        # allres <- resultfuns[[2]]
+* make.result() -- makes a result set
+* result() -- stores or retrieves a result set: 
+        # result("name", value) or
+        # result("name")
+* allres() -- returns the list of all results
+* allresnames() -- # get list of names from the list of results (finds and returns the "external" storage names)
+
+
+
+
+
 
 
 2 variables

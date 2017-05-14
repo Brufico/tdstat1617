@@ -1,8 +1,8 @@
 #'---
-#'title: "Tries"
-#'subtitle: "Various tries"
+#'title: "Standard storage and rendering functions"
+#'subtitle: "Improving and standardizing the result storage"
 #'author: "Bruno Fischer Colonimos"
-#'date: "01/05/2017"
+#'date: "12/05/2017"
 #'abstract: |
 #'      Blabla.
 #'      blablabla.
@@ -17,77 +17,35 @@
 #'---
 
 
-# beware duplicate names
-nam <- "name_§_flooz"
-nam
+#'
+#' Storage of results
+#' ==================
+#'
 
-
-# testing data: store some results.
-r1 <- make.result(name = "aha !") # discrepancy internal name of result =/= storage name
-result("hehe", r1)
-
-result("hihihi !", make.result(name = "hoho", plot1 = c(1,2,3) ) )
-
-result("hihihi !")
-
-result("hehe1", r1)
-
-allres()
-nm <- allresnames()
-nm
-
-# beware duplicate names !!!
-
-
-
-
-
-tryres <- function(var1, var2) {
-        var3 <- var1 + var2
-        c(var1 = var1, var2 = var2, var3 = var3)
-}
-
-try <- tryres( var1 = 2, var2 = 10)
-
-try
-try["var1"]
-
-
-# updating list components
-nl <- list(a = 1, b = c( 2, 3), d = "blabla")
-nl$b
-nl$x <- "new"
-nl
-nl$a <- NULL
-nl
-
-nl$b <- 1:3
-nl
-
-
-# Now seriously
-# -------------
-
+#' Storage names
+#' -------------
 
 # make a name with a list of (variable) names
 make.a.name <- function(varvect, varsep = sfdefault("varsep")) {
         paste(varvect, collapse = varsep)
 }
 
+# Reverse: split a name in elements names
+splitname <- function(cname, splistring = sfdefault("varsep")) {
+        strsplit(cname, splistring)
+}
+
 # testing
 vlist <- c("var", "faco", "cafvac") # list of variable names
 mn <- make.a.name(c("fname", vlist)) # make a name with c( function name + list of variables )
 strsplit(mn,sfdefault("varsep")) # split the name in elements names
-# split the name in elements names
-splitname <- function(cname, splistring = sfdefault("varsep")) {
-        strsplit(cname, splistring)
-}
+
 # test splitname
 splitname(mn)
 
 
 
-# verifyname("hehei") make a "safe" name with a name : verify if it is already
+# Make a "safe" name with a name : verify if it is already
 # used in storage . if it is, add an integer at the end, else return the name
 make.safe.name <- function(rootname) {
         verifyname <- function(name) {
@@ -108,57 +66,18 @@ make.safe.name <- function(rootname) {
         }
 }
 
+
+# testing
 make.safe.name("hehe")
 make.safe.name("hi")
 
 
-# store result:
-# =============
-
-# result creation (already done)
-# ---------------
-#
-# make.result(
-# ...
-#       funname = "FunX", # name of the function which produced the result
-#       varnames = c("var1", "var2", ...), # vector (or better = named vector) of variable names
-# ...
-# )
-
-# result storage (with coherent internal and external names)
-# ---------------
-
-# store.result(res)
-#       funname <- res$funname
-#       lvar <- res$varnames
-#       name0 <- make_a_name( c(lvar[1], funname, lvar[-1]))
-#       name1 <- make_safe_name(name0)
-#       res$name <- name1
-#       result(name1, res)
 
 
 
+# Rendering results
+# =================
 
-
-
-# Get all results and make a .rmd file for them (ref trygen.R)
-# ----------------------------------------------
-#
-# res.to.text(filepath) {
-#      sapply(allresnames(),
-#           Fun = function(name) {
-#                    res <-  result(name)
-#                    funname <- res$funname
-#                    txtlines <- gettextlines(funname, res$varnames)
-#                    printlines(txtlines, filepath)
-#                    TRUE # success flag
-#               }
-#       )
-# }
-
-
-#  how to get textlines
-#
 # Text output parameters:
 # -----------------------
 # set a "textfilrs" sub directory that will contain all text patterns
@@ -207,7 +126,7 @@ get.text.pattern <- function(funname, textpatterns) {
 # essai
 # get.text.pattern("cat1", textpatterns)
 
-# get and customize
+# get and customize ==> Improve please
 
 get.text.lines <- function(funname, varnames) {
         lns <- get.text.pattern(funname, textpatterns) # problème textpatterns
@@ -232,6 +151,29 @@ get.text.lines <- function(funname, varnames) {
 # example
 get.text.lines("cat1", c('zozo', 'zizi'))
 get.text.lines("verbatim", c('zaza', 'zazie'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
