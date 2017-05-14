@@ -1,0 +1,143 @@
+---
+title: "Naming principles"
+author: "Bruno Fischer Colonimos"
+subtitle: "Conventions for making, storing and naming results, and fields of results"
+abstract: |
+      * Conventions for naming results in allresults (storage list , private to functions 
+      initresults() result() allres()),
+      * Conventions for naming fields in results, 
+      * Rules for substituting fields to placeholders in text files
+      * functions for doing all this
+      
+      ---------------
+output:
+  html_document:
+    number_sections: yes
+    theme: readable
+    toc: yes
+  pdf_document:
+    number_sections: yes
+    toc: yes
+---
+
+Storage names and fields
+========================
+
+Structure of each results record and of the list-of-results
+------------------------------------------------
+
+```{r eval=FALSE}
+allresults  # list-of-all-results = named list of all results, 
+        |   # Privately called allresults in functions that access and modify it: initresult(), result(), allres()
+        |
+        |- name ... # one result 
+                (
+                name, # supposedly, the storage name in allresults. Is it useful ??
+                funname = "function name"
+                varnames = c("varname1", "varname2", ...) # variable names vector
+                caption, # keep ???
+                numcases,  # number of non-NA cases
+                summaries, # numerical summaries (quantitative variables)
+                levels,  # ???????????????? what? levels of factor 1 ?
+                levels2, # ???????????????? what? levels of factor 2 ?
+                breaks = c(<breaks vector>), # for a continuous variable histogram and table
+                closed = c("left", "right"), # for a continuous variable histogram and table
+                table ,  # default table
+                table1,
+                table2,
+                table3,
+                ptable,  # printable table
+                details, # additional info (mostly in table form)
+                chi2,    # Chisquare test result
+                anova,   # Anova test result ?
+                test1,
+                test2,
+                test3,
+                plot, # default plot
+                plot1,
+                plot2,
+                plot3 
+                        )
+        |
+        |- name ... # one result
+        |
+        |- name ... # one result
+                
+```
+
+
+
+
+1 variable
+----------
+
+* name = variable
+* caption = variable (function)
+
+
+2 variables
+-----------
+
+* name = paste( variable1 , separator, variable2)
+
+
+
+To do 1
+===========
+
+* protection against overwriting a result by using the same name
+
+* naming system
+
+* how it should be:
+
+res, res2 are analysis results
+nam is its storage name
+nam2
+
+# initial storage
+result(nam, res) # stores res in the result list, under the name nam
+
+# overwrite protection
+result(nam, res) # ==> should :
+a) lookup nam in the list. If it is already used, change nam into nam1 and try again, until it works
+b) issue a warning
+
+# overwrite protection 2: intentional overwrite
+result(nam, res, overwrite = TRUE) # disables overwrite protection
+
+# updating a stored result
+result.update(name , compname, newvalue) {
+                res <- update.result(result(name), compname, newvalue) # updates component
+                result(name, res, overwrite = TRUE) # store again updated result res.
+}
+
+update.result(res, compname, newvalue)
+# check that compname is valid and then res[compname] <- newvalue and return res
+
+
+# use that for storage of result : make name, then record storage name in the result ?
+
+
+To do 2
+============
+
+# make a storage name with a vector of variables
+
+make.a.name(varvect) {
+        paste(varvect, sep = sfdefaults("varsep"))
+}
+
+# recording function
+
+
+To do 3
+============
+
+Change the text files. review variable names there !
+* name of chunk
+* name of variable (s)
+* name of stored result
+* etc.
+
+

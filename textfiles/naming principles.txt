@@ -64,5 +64,13 @@ make.a.name(varvect) {
 # recording function
 
 
+To do 3
+============
+
+Change the text files. review variable names there !
+* name of chunk
+* name of variable (s)
+* name of stored result
+* etc.
 
 
