@@ -35,6 +35,7 @@ allresults  # list-of-all-results = **named list** of all results,
                 name, # supposedly, the storage name in allresults. Is it useful ??
                 funname = "function name"
                 varnames = c("varname1", "varname2", ...) # variable names vector
+                type # result type, for rendering =============== to be added ==================
                 caption, # keep ???
                 numcases,  # number of non-NA cases
                 summaries, # numerical summaries (quantitative variables)
@@ -116,12 +117,36 @@ custom functions: type = customname, pattern list = vector
 OR: 2 associations
 
 result type --> pattern name
-pattern name --> vector of text line chunks
+pattern name --> vector of text line chunk names
 
 
 plus, a simplified way:
 
-result type --> vector of line chunks (for custom result types)
+result type --> vector of line chunks names(for custom result types)
+
+
+examples:
+
+
+```{r eval=FALSE}
+
+line_chunks <- list(
+        # typical function-rendering texts
+        "cat1" = list (......), # list of lines
+        "num1d"= list (......), # list of lines
+        ......
+        # "lego-like"" line chunks, to allow custom rendering
+        "_xx_title" = list (......), # list of lines for title rendering
+        "_xx_plot1" = list (......), # list of lines for plot display
+        "_xx_ptable"= list (......), # list of lines for table display
+        .......
+        )
+
+```
+
+
+
+
 
 
 
