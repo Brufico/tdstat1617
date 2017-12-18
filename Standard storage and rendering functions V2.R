@@ -1,5 +1,5 @@
 #'---
-#'title: "Standard storage and rendering functions"
+#'title: "Standard storage and rendering functions V2"
 #'subtitle: "Improving and standardizing the result storage"
 #'author: "Bruno Fischer Colonimos"
 #'date: "12/05/2017"

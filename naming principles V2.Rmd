@@ -1,5 +1,5 @@
 ---
-title: "Naming principles"
+title: "Naming principles V2"
 author: "Bruno Fischer Colonimos"
 subtitle: "Conventions for making, storing and naming results, and fields of results"
 abstract: |
