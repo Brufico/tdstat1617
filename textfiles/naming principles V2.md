@@ -1,0 +1,95 @@
+
+
+Storage names, properties of result
+===================================
+
+properties of results and of the list-of-results
+---------------------
+
+list-of-results 
+        |
+        |- name ...
+                function
+                variable list
+                ...
+        |
+        |
+        |- name...
+                function
+                variable list
+                ...
+
+
+1 variable
+----------
+
+* name = variable
+* caption = variable (function)
+
+
+2 variables
+-----------
+
+* name = paste( variable1 , separator, variable2)
+
+
+
+To do 1
+===========
+
+* protection against overwriting a result by using the same name
+
+* naming system
+
+* how it should be:
+
+res, res2 are analysis results
+nam is its storage name
+nam2
+
+# initial storage
+result(nam, res) # stores res in the result list, under the name nam
+
+# overwrite protection
+result(nam, res) # ==> should :
+a) lookup nam in the list. If it is already used, change nam into nam1 and try again, until it works
+b) issue a warning
+
+# overwrite protection 2: intentional overwrite
+result(nam, res, overwrite = TRUE) # disables overwrite protection
+
+# updating a stored result
+result.update(name , compname, newvalue) {
+                res <- update.result(result(name), compname, newvalue) # updates component
+                result(name, res, overwrite = TRUE) # store again updated result res.
+}
+
+update.result(res, compname, newvalue)
+# check that compname is valid and then res[compname] <- newvalue and return res
+
+
+# use that for storage of result : make name, then record storage name in the result ?
+
+
+To do 2
+============
+
+# make a storage name with a vector of variables
+
+make.a.name(varvect) {
+        paste(varvect, sep = sfdefaults("varsep"))
+}
+
+# recording function
+
+
+To do 3
+============
+
+Change the text files. review variable names there !
+* name of chunk
+* name of variable (s)
+* name of stored result
+* etc.
+
+
